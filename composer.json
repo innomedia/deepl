@@ -1,0 +1,19 @@
+{
+    "name":"innomedia/DeepL",
+    "description": "Silverstripe 4 DeepL Integration",
+    "authors": [
+      {
+        "name":"Innomedia AG",
+        "email": "bk@innomedia.de"
+      }
+    ],
+    "require":{
+      "silverstripe/recipe-cms": "^1.1"
+    },
+    "autoload": {
+      "psr-4": {
+        "DeepL\\": "src/"
+      }
+    }
+  }
+  
