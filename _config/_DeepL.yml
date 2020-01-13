@@ -1,0 +1,15 @@
+#---
+#Name: DeepLModule
+---
+#DeepL:
+#  APIKEY: "APIKEY"
+# Comments need to be applied in project yml
+#[Class]
+#   extensions:
+#     - TranslateDataObjectExtension
+#SilverStripe\Admin\LeftAndMain:
+#  extensions:
+#    - TranslateLeftAndMainExtension
+#Page:
+#  extensions:
+#    - TranslatePageExtension
