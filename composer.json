@@ -7,9 +7,6 @@
         "email": "bk@innomedia.de"
       }
     ],
-    "require":{
-      "silverstripe/recipe-cms": "^1.1"
-    },
     "autoload": {
       "psr-4": {
         "DeepL\\": "src/"
