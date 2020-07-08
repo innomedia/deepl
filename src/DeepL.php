@@ -102,7 +102,7 @@ class Deepl
         $data = json_decode($response, true);
         try
         {
-            if (json_decode($response)->translations && count(json_decode($response)->translations) > 1) {
+            if (json_decode($response)->translations && count(json_decode($response)->translations) > 0) {
                 return $data;
             }
             return null;
