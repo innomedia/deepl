@@ -25,10 +25,6 @@ class Deepl
     }
     public static function TranslateString($text, $targetlang, $sourcelang = null)
     {
-        if (strpos($text, "Aufgrund der Vielzahl") === false) {
-            return $text;
-        }
-
         $apikey = Config::inst()->get('DeepL', 'APIKEY');
         if ($apikey != null) {
 
