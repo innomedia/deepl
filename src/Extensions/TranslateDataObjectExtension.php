@@ -16,8 +16,8 @@ class TranslateDataObjectExtension extends DataExtension
         $lang = strtoupper($tmp[0]);
         if (Deepl::canTranslate($lang)) {
             
-            $fields->addFieldToTab('Root.Translate', DropdownField::create('OriginalLanguage','Orginalsprache (von der übersetzt wird)',$this->getLocaleArray()));
-            $fields->addFieldToTab('Root.Translate', CheckboxField::create("Translate", "Übersetzen?"));
+            $fields->push(DropdownField::create('OriginalLanguage','Orginalsprache (von der übersetzt wird)',$this->getLocaleArray()));
+            $fields->push(CheckboxField::create("Translate", "Übersetzen?"));
         }
     }
     private function getLocaleArray()
