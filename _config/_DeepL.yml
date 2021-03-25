@@ -10,6 +10,3 @@
 #SilverStripe\Admin\LeftAndMain:
 #  extensions:
 #    - TranslateLeftAndMainExtension
-#Page:
-#  extensions:
-#    - TranslatePageExtension
