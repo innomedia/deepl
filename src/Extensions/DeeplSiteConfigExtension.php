@@ -1,5 +1,5 @@
 <?php
-
+use SilverStripe\ORM\DataExtension;
 class DeeplSiteConfigExtension extends DataExtension
 {
     private static $db = [
