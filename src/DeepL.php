@@ -100,16 +100,6 @@ class Deepl
         if ($httpCode !== 200) {
             return $text;
         }
-        $data = json_decode($response, true);
-        try
-        {
-            if (json_decode($response)->translations && count(json_decode($response)->translations) > 0) {
-                return $data;
-            }
-            return null;
-        } catch (Exception $ex) {
-
-        }
         try
         {
             $siteconfig = SiteConfig::current_site_config();
@@ -124,6 +114,16 @@ class Deepl
             }
         }catch(Exception $ex)
         {
+
+        }
+        $data = json_decode($response, true);
+        try
+        {
+            if (json_decode($response)->translations && count(json_decode($response)->translations) > 0) {
+                return $data;
+            }
+            return null;
+        } catch (Exception $ex) {
 
         }
     }
