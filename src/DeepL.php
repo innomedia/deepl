@@ -109,6 +109,22 @@ class Deepl
         } catch (Exception $ex) {
 
         }
+        try
+        {
+            $count = 0;
+            foreach ($texts as $text) {
+                $count += strlen($text);
+            }
+            $siteconfig = SiteConfig::current_site_config();
+            if(method_exists($siteconfig,"addTranslatedCharCount"))
+            {
+                $siteconfig->addTranslatedCharCount($count);
+                $siteconfig->write();
+            }
+        }catch(Exception $ex)
+        {
+
+        }
     }
 
     public static function cleanString($string)

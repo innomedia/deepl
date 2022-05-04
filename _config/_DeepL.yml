@@ -10,3 +10,6 @@
 #SilverStripe\Admin\LeftAndMain:
 #  extensions:
 #    - TranslateLeftAndMainExtension
+#SilverStripe\SiteConfig\SiteConfig:
+#  extensions:
+#    - DeeplSiteConfigExtension
