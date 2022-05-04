@@ -1,7 +1,8 @@
 <?php
 
-use SilverStripe\Core\Config\Config;
 use TractorCow\Fluent\Model\Locale;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\SiteConfig\SiteConfig;
 
 class Deepl
 {
@@ -111,13 +112,13 @@ class Deepl
         }
         try
         {
-            $count = 0;
-            foreach ($texts as $text) {
-                $count += strlen($text);
-            }
             $siteconfig = SiteConfig::current_site_config();
-            if(method_exists($siteconfig,"addTranslatedCharCount"))
+            if($siteconfig->hasExtension("DeeplSiteConfigExtension"))
             {
+                $count = 0;
+                foreach ($texts as $text) {
+                    $count += strlen($text);
+                }
                 $siteconfig->addTranslatedCharCount($count);
                 $siteconfig->write();
             }
