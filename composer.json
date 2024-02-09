@@ -13,9 +13,7 @@
       }
     },
     "require": {
-        "deeplcom/deepl-php": "^1.6",
-        "symfony/http-client": "^7.0",
-        "nyholm/psr7": "^1.8"
+        "deeplcom/deepl-php": "^1.6"
     },
     "config": {
         "allow-plugins": {
