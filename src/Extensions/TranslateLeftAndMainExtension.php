@@ -19,8 +19,7 @@ class TranslateLeftAndMainExtension extends LeftAndMainExtension
         $obj = $data["ClassName"]::get()->byID($data["ID"]);
         if($obj->DeepLTranslated == false)
         {
-            $tmp = explode('_', $obj->Locale);
-            $targetlocale = strtoupper($tmp[0]);
+            $targetlocale = str_replace("_","-",$obj->Locale);
             $localisedFields = [];
             $includedTables = [];
             $baseClass = $obj->baseClass();

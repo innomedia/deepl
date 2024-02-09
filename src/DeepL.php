@@ -1,5 +1,6 @@
 <?php
 
+use SilverStripe\Dev\Debug;
 use TractorCow\Fluent\Model\Locale;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\SiteConfig\SiteConfig;
@@ -71,35 +72,30 @@ class Deepl
     }
     private static function TranslationRequest($apikey, $targetlang, array $texts, $sourcelang = null, $parsed = false)
     {
-        $urls = [];
-        $url = "https://api.deepl.com/v2/translate";
-        $url .= "?auth_key=" . $apikey;
+        $translator = new \DeepL\Translator($apikey);
+        $results = [];
+        $translated = false;
         foreach ($texts as $text) {
-            $url .= "&text=" . rawurlencode($text);
+            $result = $translator->translateText($text,$sourcelang,$targetlang,["tag_handling" => "html"]);
+            if (!$parsed) {
+                $results[] = [
+                    "detected_source_language" => $result->detectedSourceLang,
+                    "text" => Deepl::unMaskText($result->text)
+                ];
+                $translated = true;
+            }
+            else
+            {
+                $results[] = [
+                    "detected_source_language" => strtoupper($result->detectedSourceLang),
+                    "text" => $result->text
+                ];
+                $translated = true;
+            }
         }
-
-        $url .= "&target_lang=" . $targetlang;
-        $url .= "&tag_handling=xml";
-        if ($sourcelang != null) {
-            $url .= "&source_lang=" . $sourcelang;
-        }
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, $url);
-        $response = curl_exec($ch);
-
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-        if (!$parsed) {
-            $response = Deepl::unMaskText($response);
-        }
-
-        if ($httpCode === 403) {
-            throw new Exception("Authentication Failed");
-        }
-        if ($httpCode !== 200) {
-            return $text;
-        }
+        $data = [
+            "translations" => $results
+        ];
         try
         {
             $siteconfig = SiteConfig::current_site_config();
@@ -116,10 +112,9 @@ class Deepl
         {
 
         }
-        $data = json_decode($response, true);
         try
         {
-            if (json_decode($response)->translations && count(json_decode($response)->translations) > 0) {
+            if (count($data["translations"]) > 0) {
                 return $data;
             }
             return null;

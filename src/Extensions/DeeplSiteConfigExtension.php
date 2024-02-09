@@ -1,4 +1,5 @@
 <?php
+use SilverStripe\Forms\FieldList;
 use SilverStripe\ORM\DataExtension;
 class DeeplSiteConfigExtension extends DataExtension
 {
