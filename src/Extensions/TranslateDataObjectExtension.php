@@ -38,8 +38,9 @@ class TranslateDataObjectExtension extends DataExtension
         if (array_key_exists("Translate", $this->owner->getChangedFields(false, 1))) {
             if ($this->owner->getChangedFields(false, 1)["Translate"]["after"] == 1) {
                 $sourcelocale = $this->owner->getChangedFields(false, 1)["OriginalLanguage"]["after"];
-                $tmp = explode('_', Locale::getCurrentLocale()->Locale);
-                $targetlocale = strtoupper($tmp[0]);
+                $targetlocale = str_replace("_","-",Locale::getCurrentLocale()->Locale);
+            
+                $targetlocale = strtoupper($targetlocale);
                 $localisedFields = [];
                 $includedTables = [];
                 $baseClass = $this->owner->baseClass();
