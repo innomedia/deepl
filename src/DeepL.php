@@ -7,7 +7,44 @@ use SilverStripe\SiteConfig\SiteConfig;
 
 class Deepl
 {
-    private static $AvailableLanguages = ["EN", "DE", "FR", "ES", "PT", "IT", "NL", "PL", "RU"];
+    private static $AvailableLanguages = [
+        "AR",       // Arabic
+        "BG",       // Bulgarian
+        "CS",       // Czech
+        "DA",       // Danish
+        "DE",       // German
+        "EL",       // Greek
+        "EN",       // English (unspecified variant for backward compatibility)
+        "EN-GB",    // English (British)
+        "EN-US",    // English (American)
+        "ES",       // Spanish
+        "ET",       // Estonian
+        "FI",       // Finnish
+        "FR",       // French
+        "HU",       // Hungarian
+        "ID",       // Indonesian
+        "IT",       // Italian
+        "JA",       // Japanese
+        "KO",       // Korean
+        "LT",       // Lithuanian
+        "LV",       // Latvian
+        "NB",       // Norwegian Bokmål
+        "NL",       // Dutch
+        "PL",       // Polish
+        "PT",       // Portuguese (unspecified variant for backward compatibility)
+        "PT-BR",    // Portuguese (Brazilian)
+        "PT-PT",    // Portuguese (all Portuguese variants excluding Brazilian Portuguese)
+        "RO",       // Romanian
+        "RU",       // Russian
+        "SK",       // Slovak
+        "SL",       // Slovenian
+        "SV",       // Swedish
+        "TR",       // Turkish
+        "UK",       // Ukrainian
+        "ZH",       // Chinese (unspecified variant for backward compatibility)
+        "ZH-HANS",  // Chinese (simplified)
+        "ZH-HANT"   // Chinese (traditional)
+    ];
 
     public static function maskText($text)
     {
@@ -25,8 +62,20 @@ class Deepl
     {
         return preg_match("/<[^<]+>/", $string, $m) != 0;
     }
+    private static function updateLanguageString($string)
+    {        
+        switch($string)
+        {
+            case "zh-CN":
+                $string = "zh-HANT";
+                break;
+        }
+
+        return $string;
+    }
     public static function TranslateString($text, $targetlang, $sourcelang = null)
     {
+        $targetlang = self::updateLanguageString($targetlang);
         $apikey = Config::inst()->get('DeepL', 'APIKEY');
         if ($apikey != null) {
 
