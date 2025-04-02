@@ -67,6 +67,7 @@ class Deepl
         switch($string)
         {
             case "zh-CN":
+            case "ZH-CN":
                 $string = "zh-HANT";
                 break;
         }
