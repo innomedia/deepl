@@ -1,5 +1,6 @@
 <?php
 
+use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\Debug;
 use SilverStripe\Forms\Form;
 use SilverStripe\Core\ClassInfo;
@@ -7,6 +8,7 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\FormAction;
 use SilverStripe\Admin\LeftAndMainExtension;
+use TractorCow\Fluent\State\FluentState;
 
 
 class TranslateLeftAndMainExtension extends LeftAndMainExtension
@@ -35,12 +37,32 @@ class TranslateLeftAndMainExtension extends LeftAndMainExtension
                     }
                 }
             }
-            foreach($localisedFields as $field)
+            if($configuredSourceLocale = Config::inst()->get('DeepL', 'translateFromSourceLocale'))
             {
-                if($field != "")
+                $fieldValuesSourceLocale = FluentState::singleton()->withState(function(FluentState $state) use ($configuredSourceLocale, $localisedFields, $obj) {
+                    $state->setLocale($configuredSourceLocale);
+                    $fieldValues = [];
+                    $object = $obj->ClassName::get()->byID($obj->ID);
+                    foreach ($localisedFields as $field) {
+                        if ($field != "" && $object->getField($field) != "") {
+                            $fieldValues[$field] = $object->getField($field);
+                        }
+                    }
+                    return $fieldValues;
+                });
+
+                foreach ($fieldValuesSourceLocale as $fieldName => $fieldValue){
+                    $translation = Deepl::TranslateString($fieldValue, $targetlocale,$sourcelocale);
+                    $obj->setField($fieldName, $translation);
+                }
+            } else {
+                foreach($localisedFields as $field)
                 {
-                    $translation = Deepl::TranslateString($obj->getField($field),$targetlocale);
-                    $obj->setField($field,$translation);
+                    if($field != "" && $this->owner->getField($field) != "")
+                    {
+                        $translation = Deepl::TranslateString($obj->getField($field),$targetlocale);
+                        $obj->setField($field,$translation);
+                    }
                 }
             }
             $obj->DeepLTranslated = true;
