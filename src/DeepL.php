@@ -72,6 +72,21 @@ class Deepl
                 break;
         }
 
+        if (in_array(strtoupper($string), self::$AvailableLanguages)) {
+            return $string;
+        }
+    
+        // Split the string by "-" or "_"
+        $parts = preg_split('/[-_]/', $string);
+    
+        // Find the first valid part in AvailableLanguages
+        foreach ($parts as $part) {
+            if (in_array(strtoupper($part), self::$AvailableLanguages)) {
+                $string = strtoupper($part);
+                return $string;
+            }
+        }
+
         return $string;
     }
     public static function TranslateString($text, $targetlang, $sourcelang = null)
