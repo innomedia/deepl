@@ -63,9 +63,9 @@ class Deepl
         return preg_match("/<[^<]+>/", $string, $m) != 0;
     }
     private static function updateLanguageString($string)
-    {        
-        if(Config::inst()->get(__CLASS__, 'languagesToUpate')){
-            $languagesToUpdate = Config::inst()->get(__CLASS__, 'languagesToUpate');
+    {
+        if(Config::inst()->get(__CLASS__, 'languagesToUpdate')){
+            $languagesToUpdate = Config::inst()->get(__CLASS__, 'languagesToUpdate');
             foreach($languagesToUpdate as $key => $value)
             {
                 if($string == $key)
@@ -103,6 +103,7 @@ class Deepl
     public static function TranslateString($text, $targetlang, $sourcelang = null)
     {
         $targetlang = self::updateLanguageString($targetlang);
+
         $apikey = Config::inst()->get('DeepL', 'APIKEY');
         if ($apikey != null) {
 
