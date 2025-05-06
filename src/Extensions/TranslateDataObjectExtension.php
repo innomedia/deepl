@@ -7,6 +7,8 @@ use SilverStripe\ORM\DataExtension;
 use TractorCow\Fluent\Model\Locale;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DropdownField;
+use TractorCow\Fluent\State\FluentState;
+use SilverStripe\Core\Config\Config;
 
 class TranslateDataObjectExtension extends DataExtension
 {
@@ -45,7 +47,7 @@ class TranslateDataObjectExtension extends DataExtension
                 $includedTables = [];
                 $baseClass = $this->owner->baseClass();
                 $tableClasses = ClassInfo::ancestry($this->owner, true);
-                
+
                 foreach ($tableClasses as $class) {
                     // Check translated fields for this class (except base table, which is always scaffolded)
                     $translatedFields = $this->owner->getLocalisedFields($class);
@@ -55,10 +57,31 @@ class TranslateDataObjectExtension extends DataExtension
                         }
                     }
                 }
-                foreach ($localisedFields as $field) {
-                    if ($field != "" && $this->owner->getField($field) != "") {
-                        $translation = Deepl::TranslateString($this->owner->getField($field), $targetlocale,$sourcelocale);
-                        $this->owner->setField($field, $translation);
+                if($configuredSourceLocale = Config::inst()->get('DeepL', 'translateFromSourceLocale'))
+                {
+                    $fieldValuesSourceLocale = FluentState::singleton()->withState(function(FluentState $state) use ($configuredSourceLocale, $localisedFields) {
+                        $state->setLocale($configuredSourceLocale);
+                        $fieldValues = [];
+                        $object = $this->owner->ClassName::get()->byID($this->owner->ID);
+                        foreach ($localisedFields as $field) {
+                            if ($field != "" && $object->getField($field) != "") {
+                                $fieldValues[$field] = $object->getField($field);
+                            }
+                        }
+                        return $fieldValues;
+                    });
+
+
+                    foreach ($fieldValuesSourceLocale as $fieldName => $fieldValue){
+                        $translation = Deepl::TranslateString($fieldValue, $targetlocale,$sourcelocale);
+                        $this->owner->setField($fieldName, $translation);
+                    }
+                } else {
+                    foreach ($localisedFields as $field) {
+                        if ($field != "" && $this->owner->getField($field) != "") {
+                            $translation = Deepl::TranslateString($this->owner->getField($field), $targetlocale,$sourcelocale);
+                            $this->owner->setField($field, $translation);
+                        }
                     }
                 }
                 $this->owner->DeepLTranslated = true;
