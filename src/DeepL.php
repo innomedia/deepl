@@ -64,6 +64,17 @@ class Deepl
     }
     private static function updateLanguageString($string)
     {        
+        if(Config::inst()->get(__CLASS__, 'languagesToUpate')){
+            $languagesToUpdate = Config::inst()->get(__CLASS__, 'languagesToUpate');
+            foreach($languagesToUpdate as $key => $value)
+            {
+                if($string == $key)
+                {
+                    $string = $value;
+                }
+            }
+        }
+        
         switch($string)
         {
             case "zh-CN":
