@@ -13,7 +13,7 @@
       }
     },
     "require": {
-        "deeplcom/deepl-php": "^1.6"
+        "deeplcom/deepl-php": "^1"
     },
     "config": {
         "allow-plugins": {
