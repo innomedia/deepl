@@ -52,13 +52,13 @@ class TranslateLeftAndMainExtension extends LeftAndMainExtension
                 });
 
                 foreach ($fieldValuesSourceLocale as $fieldName => $fieldValue){
-                    $translation = Deepl::TranslateString($fieldValue, $targetlocale,$sourcelocale);
+                    $translation = Deepl::TranslateString($fieldValue, $targetlocale);
                     $obj->setField($fieldName, $translation);
                 }
             } else {
                 foreach($localisedFields as $field)
                 {
-                    if($field != "" && $this->owner->getField($field) != "")
+                    if($field != "" && $obj->getField($field) != "")
                     {
                         $translation = Deepl::TranslateString($obj->getField($field),$targetlocale);
                         $obj->setField($field,$translation);
