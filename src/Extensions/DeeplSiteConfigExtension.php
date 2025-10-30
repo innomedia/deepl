@@ -1,7 +1,9 @@
 <?php
+
 use SilverStripe\Forms\FieldList;
-use SilverStripe\ORM\DataExtension;
-class DeeplSiteConfigExtension extends DataExtension
+use SilverStripe\Core\Extension;
+
+class DeeplSiteConfigExtension extends Extension
 {
     private static $db = [
         "TranslatedCharCount"   =>  'Int'

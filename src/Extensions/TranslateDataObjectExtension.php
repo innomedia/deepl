@@ -3,14 +3,14 @@
 use SilverStripe\Dev\Debug;
 use SilverStripe\Core\ClassInfo;
 use SilverStripe\Forms\FieldList;
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 use TractorCow\Fluent\Model\Locale;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DropdownField;
 use TractorCow\Fluent\State\FluentState;
 use SilverStripe\Core\Config\Config;
 
-class TranslateDataObjectExtension extends DataExtension
+class TranslateDataObjectExtension extends Extension
 {
     public function updateCMSFields(FieldList $fields)
     {

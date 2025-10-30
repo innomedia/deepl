@@ -7,11 +7,11 @@ use SilverStripe\Core\ClassInfo;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\FormAction;
-use SilverStripe\Admin\LeftAndMainExtension;
+use SilverStripe\Core\Extension;
 use TractorCow\Fluent\State\FluentState;
 
 
-class TranslateLeftAndMainExtension extends LeftAndMainExtension
+class TranslateLeftAndMainExtension extends Extension
 {
     private static $allowed_actions = [
         "doTranslate"
